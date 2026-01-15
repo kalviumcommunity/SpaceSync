@@ -60,6 +60,36 @@ SpaceSync is a **cross-platform mobile application** built using **Flutter** and
 
 ---
 
+## ⚡ Performance Architecture
+
+### Flutter's Reactive Rendering Model
+
+Flutter uses a **declarative reactive rendering** approach that ensures consistent 60fps performance across platforms:
+
+* **Widget Tree Rebuild System**: When state changes, Flutter efficiently rebuilds only the affected widgets using the diffing algorithm
+* **Skia Rendering Engine**: Direct-to-GPU rendering eliminates browser layer overhead, providing consistent frame rates
+* **Impeller Display List**: Pre-compiles rendering commands for faster execution on mobile devices
+* **Isolate-Based Architecture**: UI and background tasks run in separate isolates, preventing UI thread blocking
+
+### Dart's Async Model for Smooth Performance
+
+Dart's **single-threaded event loop** with async/await patterns ensures responsive UI:
+
+* **Non-blocking Operations**: Network requests, database queries, and file I/O use async/await without freezing the UI
+* **Microtask Queue**: Critical UI updates get priority over background computations
+* **Future & Stream APIs**: Real-time data from Firestore uses streams for live updates without manual polling
+* **Compute Isolates**: Heavy computations (data processing, encryption) run in separate isolates
+
+### Cross-Platform Consistency
+
+This architecture combination delivers:
+- **Consistent 60fps** on both iOS and Android
+- **Smooth animations** and transitions
+- **Real-time updates** without UI lag
+- **Efficient memory usage** through automatic widget disposal
+
+---
+
 ## 🧠 Sprint Alignment (Module 2)
 
 This project is developed as part of:
