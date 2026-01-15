@@ -35,6 +35,41 @@ SpaceSync is a **cross-platform mobile application** built using **Flutter** and
 
 ---
 
+## 🧩 Flutter Concepts
+
+### StatelessWidget vs StatefulWidget
+
+- **StatelessWidget**:
+  - Immutable once built
+  - Lightweight and efficient
+  - Used for static content that doesn't change
+  - Example: App bars, icons, text widgets
+
+- **StatefulWidget**:
+  - Maintains state that might change during the widget's lifetime
+  - Rebuilds UI when internal state changes
+  - Used for dynamic content and user interaction
+  - Example: Forms, animations, counters
+
+### Widget Tree & Reactive UI
+
+Flutter builds UIs using a widget tree structure where:
+- Each UI component is a widget
+- Widgets can contain other widgets (composition)
+- The framework efficiently updates only the widgets that change
+- The widget tree is rebuilt when state changes, but Flutter's diffing algorithm ensures optimal performance
+- This reactive approach enables smooth, 60fps animations and transitions
+
+### Why Dart for Flutter?
+
+Dart was chosen for Flutter because it:
+- Compiles to native ARM code for high performance
+- Supports both JIT (Just-In-Time) and AOT (Ahead-Of-Time) compilation
+- Has a rich standard library and strong typing
+- Supports both object-oriented and functional programming
+- Enables hot reload for rapid development
+- Provides excellent tooling and IDE support
+
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -115,17 +150,65 @@ The sprint focuses on designing and developing intelligent, scalable, and cloud-
 
 ---
 
-## 🚀 Setup Instructions
+## 🚀 Getting Started
 
-1. Install Flutter SDK
-2. Set up Android Studio & Emulator
-3. Create a Firebase Project
-4. Connect Firebase using FlutterFire CLI
-5. Run the app using:
+### Prerequisites
+- Flutter SDK (3.0.0 or higher)
+- Dart SDK (included with Flutter)
+- Android Studio / Xcode (for emulators)
+- VS Code or Android Studio (as IDE)
+- Git (for version control)
 
+### Installation
+
+1. **Clone the repository**
    ```bash
-   flutter run
+   git clone https://github.com/yourusername/spacesync.git
+   cd spacesync
    ```
+
+2. **Install Dependencies**
+   ```bash
+   flutter pub get
+   ```
+
+3. **Run the App**
+   - For Android:
+     ```bash
+     flutter run -d chrome  # For web
+     # OR
+     flutter run           # For connected device/emulator
+     ```
+   - For iOS (macOS only):
+     ```bash
+     flutter run -d ios
+     ```
+
+4. **Build for Production**
+   - Android APK:
+     ```bash
+     flutter build apk --release
+     ```
+   - iOS (macOS only):
+     ```bash
+     flutter build ios --release
+     ```
+
+### Development Workflow
+- Use `flutter analyze` to check code quality
+- Run tests with `flutter test`
+- Use `flutter doctor` to verify your development environment
+- For stateful hot reload during development:
+  ```bash
+  flutter run --hot
+  ```
+
+### Firebase Setup (Required for Full Functionality)
+1. Create a new project on [Firebase Console](https://console.firebase.google.com/)
+2. Add Android/iOS/Web app to your Firebase project
+3. Download the configuration files and place them in the appropriate directories
+4. Enable required Firebase services (Authentication, Firestore, etc.)
+5. Run `flutterfire configure` to set up Firebase for your Flutter app
 
 ---
 
