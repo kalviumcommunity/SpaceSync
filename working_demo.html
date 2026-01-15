@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpaceSync - Working Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .app-bar {
+            background: #2196F3;
+            color: white;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .space-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .space-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .space-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .space-icon {
+            font-size: 24px;
+            margin-right: 8px;
+        }
+
+        .space-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .occupancy-display {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 2px solid #e9ecef;
+        }
+
+        .occupancy-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .occupancy-count {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .availability-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-decrease {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-increase {
+            background: #28a745;
+            color: white;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 16px;
+            font-size: 13px;
+            color: #1565c0;
+        }
+
+        .status-low { color: #28a745; }
+        .status-medium { color: #ffc107; }
+        .status-high { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="app-bar">🏢 SpaceSync - Availability Demo</div>
+    
+    <div class="container">
+        <div class="space-card">
+            <div class="space-header">
+                <span class="space-icon">🏋️</span>
+                <span class="space-name">Gym</span>
+            </div>
+            
+            <div class="occupancy-display">
+                <div class="occupancy-label">Current Occupancy</div>
+                <div class="occupancy-count" id="gym-count">8 / 25</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="gym-progress" style="width: 32%; background: #28a745;"></div>
+                </div>
+                <div class="availability-text status-low" id="gym-status">68% Available</div>
+            </div>
+            
+            <div class="button-row">
+                <button class="btn btn-decrease" id="gym-decrease" onclick="updateSpace('gym', -1)">➖ Decrease</button>
+                <button class="btn btn-increase" id="gym-increase" onclick="updateSpace('gym', 1)">➕ Increase</button>
+            </div>
+            
+            <div class="info-box">
+                💡 Click buttons to see reactive UI updates! Each change triggers automatic UI rebuild.
+            </div>
+        </div>
+
+        <div class="space-card">
+            <div class="space-header">
+                <span class="space-icon">🏛️</span>
+                <span class="space-name">Community Hall</span>
+            </div>
+            
+            <div class="occupancy-display">
+                <div class="occupancy-label">Current Occupancy</div>
+                <div class="occupancy-count" id="hall-count">45 / 100</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="hall-progress" style="width: 45%; background: #ffc107;"></div>
+                </div>
+                <div class="availability-text status-medium" id="hall-status">55% Available</div>
+            </div>
+            
+            <div class="button-row">
+                <button class="btn btn-decrease" id="hall-decrease" onclick="updateSpace('hall', -1)">➖ Decrease</button>
+                <button class="btn btn-increase" id="hall-increase" onclick="updateSpace('hall', 1)">➕ Increase</button>
+            </div>
+            
+            <div class="info-box">
+                💡 State changes trigger automatic UI rebuild - just like Flutter's setState()!
+            </div>
+        </div>
+
+        <div class="space-card">
+            <div class="space-header">
+                <span class="space-icon">🚗</span>
+                <span class="space-name">Parking Area A</span>
+            </div>
+            
+            <div class="occupancy-display">
+                <div class="occupancy-label">Current Occupancy</div>
+                <div class="occupancy-count" id="parking-count">42 / 50</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="parking-progress" style="width: 84%; background: #dc3545;"></div>
+                </div>
+                <div class="availability-text status-high" id="parking-status">16% Available</div>
+            </div>
+            
+            <div class="button-row">
+                <button class="btn btn-decrease" id="parking-decrease" onclick="updateSpace('parking', -1)">➖ Decrease</button>
+                <button class="btn btn-increase" id="parking-increase" onclick="updateSpace('parking', 1)">➕ Increase</button>
+            </div>
+            
+            <div class="info-box">
+                💡 Real-time occupancy tracking for transparent space management!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const spaces = {
+            gym: { current: 8, max: 25 },
+            hall: { current: 45, max: 100 },
+            parking: { current: 42, max: 50 }
+        };
+
+        function updateSpace(spaceId, change) {
+            const space = spaces[spaceId];
+            const newCount = space.current + change;
+            
+            if (newCount >= 0 && newCount <= space.max) {
+                space.current = newCount;
+                renderSpace(spaceId);
+            }
+        }
+
+        function renderSpace(spaceId) {
+            const space = spaces[spaceId];
+            const percentage = space.current / space.max;
+            const available = Math.round((1 - percentage) * 100);
+            
+            // Update count
+            document.getElementById(spaceId + '-count').textContent = space.current + ' / ' + space.max;
+            
+            // Update progress bar
+            const progress = document.getElementById(spaceId + '-progress');
+            progress.style.width = (percentage * 100) + '%';
+            
+            // Update status and colors
+            const status = document.getElementById(spaceId + '-status');
+            const decreaseBtn = document.getElementById(spaceId + '-decrease');
+            const increaseBtn = document.getElementById(spaceId + '-increase');
+            
+            // Update button states
+            decreaseBtn.disabled = space.current <= 0;
+            increaseBtn.disabled = space.current >= space.max;
+            
+            if (percentage < 0.5) {
+                progress.style.background = '#28a745';
+                status.className = 'availability-text status-low';
+                status.textContent = available + '% Available';
+            } else if (percentage < 0.8) {
+                progress.style.background = '#ffc107';
+                status.className = 'availability-text status-medium';
+                status.textContent = available + '% Available';
+            } else {
+                progress.style.background = '#dc3545';
+                status.className = 'availability-text status-high';
+                status.textContent = percentage >= 1 ? 'FULL' : available + '% Available';
+            }
+        }
+
+        // Initialize all spaces
+        Object.keys(spaces).forEach(renderSpace);
+    </script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+/build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+*.iws
+*.ipr
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history/
+.svn/
+.mf/
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.packages
+.pub-cache/
+.pub/
+/build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history/
+.svn/
+.mf/
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+# Android
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/android/app/src/test/
+**/android/app/src/androidTest/
+**/android/captures/
+**/android/.gradle/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/gradle.properties
+**/android/settings.gradle
+**/android/gradle/
+**/android/.idea/
+**/android/*.iml
+**/android/*.properties
+**/android/*.json
+**/android/*.keystore
+**/android/*.jks
+# iOS
+**/ios/**/Pods/
+**/ios/**/.symlinks/
+**/ios/**/profile
+**/ios/**/Flutter/Flutter.framework/
+**/ios/**/Flutter/Flutter.podspec
+**/ios/**/Flutter/Generated.xcconfig
+**/ios/**/Flutter/app.flx
+**/ios/**/Flutter/app.zip
+**/ios/**/Flutter/flutter_assets/
+**/ios/**/ServiceDefinitions.json
+**/ios/**/Runner.entitlements
+**/ios/**/Runner.xcodeproj/project.xcworkspace/
+**/ios/**/Runner.xcodeproj/xcuserdata/
+**/ios/**/Runner.xcworkspace/
+**/ios/**/Runner.xcworkspace/xcuserdata/
+**/ios/**/Runner.xcworkspace/contents.xcworkspacedata
+**/ios/**/Runner.xcworkspace/xcshareddata/
+**/ios/**/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+**/ios/**/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+**/ios/**/Runner.xcworkspace/xcuserdata/
+**/ios/**/Pods/
+**/ios/**/.symlinks/
+**/ios/**/profile
+**/ios/**/Flutter/Flutter.framework/
+**/ios/**/Flutter/Flutter.podspec
+**/ios/**/Flutter/Generated.xcconfig
+**/ios/**/Flutter/app.flx
+**/ios/**/Flutter/app.zip
+**/ios/**/Flutter/flutter_assets/
+**/ios/**/ServiceDefinitions.json
+**/ios/**/Runner.entitlements
+**/ios/**/Runner.xcodeproj/project.xcworkspace/
+**/ios/**/Runner.xcodeproj/xcuserdata/
+**/ios/**/Runner.xcworkspace/
+**/ios/**/Runner.xcworkspace/xcuserdata/
+**/ios/**/Runner.xcworkspace/contents.xcworkspacedata
+**/ios/**/Runner.xcworkspace/xcshareddata/
+**/ios/**/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+**/ios/**/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+**/ios/**/Runner.xcworkspace/xcuserdata/
+# Web
+**/web/.dart_tool/
+**/web/build/
+**/web/.dart_tool/
+**/web/build/
+**/web/.dart_tool/
+**/web/build/
+# Windows
+**/windows/.dart_tool/
+**/windows/build/
+**/windows/.dart_tool/
+**/windows/build/
+**/windows/.dart_tool/
+**/windows/build/
+# Linux
+**/linux/.dart_tool/
+**/linux/build/
+**/linux/.dart_tool/
+**/linux/build/
+**/linux/.dart_tool/
+**/linux/build/
+# MacOS
+**/macos/.dart_tool/
+**/macos/build/
+**/macos/.dart_tool/
+**/macos/build/
+**/macos/.dart_tool/
+**/macos/build/
+# Environment variables
+.env
+.env.*
+!.env.example
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+# Coverage
+coverage/
+.coveralls.yml
+# Dependency directories
+node_modules/
+.pnp/
+.pnp.js
+.yarn-integrity
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+# Build files
+build/
+dist/
+out/
+.next/
+.nuxt/
+.nuxt-prod
+.nuxt-dev
+.nuxt-analyze
+.nuxt-ssr
+.nuxt-export
+.nuxt-generate
+.nuxt-types
+.nuxt-tsc
+.nuxt-tsc-check
+.nuxt-tsc-check.json
+.nuxt-tsc-check.tsbuildinfo
+.nuxt-tsc-check.tsbuildinfo.keep
+.nuxt-tsc-check.tsbuildinfo.temp
+.nuxt-tsc-check.tsbuildinfo.temp.*
