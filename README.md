@@ -4,6 +4,8 @@
 
 ## 📌 Problem Statement
 
+hello
+
 Residents in large housing communities often lack real-time visibility into the availability of shared spaces such as gyms, community halls, parking areas, and other amenities. This results in confusion, overcrowding, scheduling conflicts, and inefficient space usage.
 
 **SpaceSync** solves this problem by making access and occupancy of shared spaces transparent, real-time, and easy to manage through a smart mobile application.
