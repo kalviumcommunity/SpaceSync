@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'services/auth_service.dart';
 import 'services/firestore_service.dart';
+import 'services/mock_services.dart';
+import 'models/space.dart';
+import 'main.dart'; // To access useMockServices
 
 class SpaceAvailabilityDemo extends StatelessWidget {
   const SpaceAvailabilityDemo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final FirestoreService firestoreService = FirestoreService();
+    // Dynamically choose service based on mode
+    final dynamic firestoreService =
+        useMockServices ? MockFirestoreService() : FirestoreService();
 
     return Scaffold(
       appBar: AppBar(
@@ -16,11 +20,17 @@ class SpaceAvailabilityDemo extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () => AuthService().signOut(),
+            onPressed: () {
+              if (useMockServices) {
+                MockAuthService().signOut();
+              } else {
+                AuthService().signOut();
+              }
+            },
           ),
         ],
       ),
-      body: StreamBuilder<QuerySnapshot>(
+      body: StreamBuilder<List<Space>>(
         stream: firestoreService.getSpaces(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -30,9 +40,9 @@ class SpaceAvailabilityDemo extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final docs = snapshot.data?.docs ?? [];
+          final spaces = snapshot.data ?? [];
 
-          if (docs.isEmpty) {
+          if (spaces.isEmpty) {
             return Center(
               child: ElevatedButton(
                 onPressed: () async {
@@ -46,18 +56,26 @@ class SpaceAvailabilityDemo extends StatelessWidget {
             );
           }
 
-          return ListView.builder(
-            itemCount: docs.length,
-            itemBuilder: (context, index) {
-              final doc = docs[index];
-              final data = doc.data() as Map<String, dynamic>;
-              return SpaceListItem(
-                docId: doc.id,
-                name: data['name'] ?? 'Unknown',
-                maxCapacity: data['maxCapacity'] ?? 0,
-                currentOccupancy: data['currentOccupancy'] ?? 0,
-              );
-            },
+          return Column(
+            children: [
+              if (useMockServices)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(8),
+                  color: Colors.orange[100],
+                  child: const Text("DEMO MODE: Changes sync in-memory only",
+                      textAlign: TextAlign.center),
+                ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: spaces.length,
+                  itemBuilder: (context, index) {
+                    final space = spaces[index];
+                    return SpaceListItem(space: space);
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),
@@ -66,21 +84,15 @@ class SpaceAvailabilityDemo extends StatelessWidget {
 }
 
 class SpaceListItem extends StatelessWidget {
-  final String docId;
-  final String name;
-  final int maxCapacity;
-  final int currentOccupancy;
+  final Space space;
 
   const SpaceListItem({
     super.key,
-    required this.docId,
-    required this.name,
-    required this.maxCapacity,
-    required this.currentOccupancy,
+    required this.space,
   });
 
   double get _availabilityPercentage =>
-      maxCapacity == 0 ? 0 : currentOccupancy / maxCapacity;
+      space.maxCapacity == 0 ? 0 : space.currentOccupancy / space.maxCapacity;
 
   Color get _occupancyColor {
     if (_availabilityPercentage < 0.5) return Colors.green;
@@ -90,7 +102,8 @@ class SpaceListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FirestoreService firestoreService = FirestoreService();
+    final dynamic firestoreService =
+        useMockServices ? MockFirestoreService() : FirestoreService();
 
     return Card(
       margin: const EdgeInsets.all(16.0),
@@ -103,7 +116,7 @@ class SpaceListItem extends StatelessWidget {
               children: [
                 Icon(Icons.location_on, color: _occupancyColor),
                 const SizedBox(width: 8),
-                Text(name, style: Theme.of(context).textTheme.titleLarge),
+                Text(space.name, style: Theme.of(context).textTheme.titleLarge),
               ],
             ),
             const SizedBox(height: 16),
@@ -114,16 +127,16 @@ class SpaceListItem extends StatelessWidget {
               minHeight: 10,
             ),
             const SizedBox(height: 8),
-            Text('$currentOccupancy / $maxCapacity Occupied'),
+            Text('${space.currentOccupancy} / ${space.maxCapacity} Occupied'),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: currentOccupancy > 0
+                  onPressed: space.currentOccupancy > 0
                       ? () => firestoreService.updateOccupancy(
-                            docId,
-                            currentOccupancy - 1,
+                            space.id,
+                            space.currentOccupancy - 1,
                           )
                       : null,
                   style: ElevatedButton.styleFrom(
@@ -131,10 +144,10 @@ class SpaceListItem extends StatelessWidget {
                   child: const Text('Decrease'),
                 ),
                 ElevatedButton(
-                  onPressed: currentOccupancy < maxCapacity
+                  onPressed: space.currentOccupancy < space.maxCapacity
                       ? () => firestoreService.updateOccupancy(
-                            docId,
-                            currentOccupancy + 1,
+                            space.id,
+                            space.currentOccupancy + 1,
                           )
                       : null,
                   style: ElevatedButton.styleFrom(

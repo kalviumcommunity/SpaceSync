@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // Lazy access to instance ensures we don't crash on instantiation if app isn't initialized
+  FirebaseAuth get _auth => FirebaseAuth.instance;
 
   // Stream of user state changes
   Stream<User?> get user => _auth.authStateChanges();
