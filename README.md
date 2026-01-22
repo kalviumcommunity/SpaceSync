@@ -2,6 +2,10 @@
 
 **Transparent Access & Occupancy Management for Shared Community Spaces**
 
+> 📘 **Documentation**: [See API & Architecture Docs](ARCHITECTURE.md)  
+> 📡 **API Specs**: [Postman Collection](docs/flutter_firebase_postman.json)  
+> 🔄 **Version**: 1.0.0 (Updated: 2026-01-22)
+
 ## 📌 Problem Statement
 
 hello

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
+import '../services/mock_services.dart';
+import '../main.dart'; // To access useMockServices
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -9,7 +11,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final AuthService _auth = AuthService();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLogin = true;
@@ -23,16 +24,34 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      if (_isLogin) {
-        await _auth.signInWithEmail(
-          _emailController.text.trim(),
-          _passwordController.text.trim(),
-        );
+      if (useMockServices) {
+        // USE MOCK AUTH
+        final auth = MockAuthService();
+        if (_isLogin) {
+          await auth.signInWithEmail(
+            _emailController.text.trim(),
+            _passwordController.text.trim(),
+          );
+        } else {
+          await auth.signUpWithEmail(
+            _emailController.text.trim(),
+            _passwordController.text.trim(),
+          );
+        }
       } else {
-        await _auth.signUpWithEmail(
-          _emailController.text.trim(),
-          _passwordController.text.trim(),
-        );
+        // USE REAL FIREBASE AUTH
+        final auth = AuthService();
+        if (_isLogin) {
+          await auth.signInWithEmail(
+            _emailController.text.trim(),
+            _passwordController.text.trim(),
+          );
+        } else {
+          await auth.signUpWithEmail(
+            _emailController.text.trim(),
+            _passwordController.text.trim(),
+          );
+        }
       }
     } catch (e) {
       setState(() {
@@ -55,6 +74,21 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            if (useMockServices)
+              Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.all(8),
+                color: Colors.orange[100],
+                child: const Row(
+                  children: [
+                    Icon(Icons.warning, color: Colors.orange),
+                    SizedBox(width: 8),
+                    Expanded(
+                        child: Text("Running in DEMO MODE (Mock Backend)",
+                            style: TextStyle(color: Colors.orange))),
+                  ],
+                ),
+              ),
             if (_errorMessage != null)
               Container(
                 padding: const EdgeInsets.all(8),

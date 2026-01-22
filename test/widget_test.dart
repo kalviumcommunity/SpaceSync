@@ -1,9 +1,4 @@
 // This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,20 +6,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:spacesync/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('App smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    // Since Firebase.initializeApp() isn't mocked here, it might fail or we need to setup mocks properly.
+    // For now, testing that the App widget builds is enough for a smoke test.
+    await tester.pumpWidget(const SpaceSyncApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify critical UI elements are present (e.g., App Title)
+    // Note: Since main() logic isn't run, we might need to rely on what gets rendered initially.
+    // The initial render is a StreamBuilder waiting for a connection or snapshot.
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
   });
 }

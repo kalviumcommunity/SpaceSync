@@ -1,0 +1,232 @@
+{
+    "info": {
+        "_postman_id": "spacesync-api-docs",
+        "name": "Flutter-Firebase API Documentation",
+        "description": "API Documentation for SpaceSync Flutter Application using Firebase Services.\n\n**Version**: 1.0.0\n**Base URL**: https://firestore.googleapis.com/v1/projects/{project_id}/databases/(default)/documents\n**Auth**: Firebase Token (Bearer)\n**Updated**: 2026-01-22",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Sign Up (Email/Password)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\",\n    \"returnSecureToken\": true\n}"
+                        },
+                        "url": {
+                            "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]",
+                            "protocol": "https",
+                            "host": [
+                                "identitytoolkit",
+                                "googleapis",
+                                "com"
+                            ],
+                            "path": [
+                                "v1",
+                                "accounts:signUp"
+                            ],
+                            "query": [
+                                {
+                                    "key": "key",
+                                    "value": "[API_KEY]",
+                                    "description": "Your Firebase Web API Key"
+                                }
+                            ]
+                        },
+                        "description": "Creates a new user account with email and password."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Sign In (Email/Password)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\",\n    \"returnSecureToken\": true\n}"
+                        },
+                        "url": {
+                            "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=[API_KEY]",
+                            "protocol": "https",
+                            "host": [
+                                "identitytoolkit",
+                                "googleapis",
+                                "com"
+                            ],
+                            "path": [
+                                "v1",
+                                "accounts:signInWithPassword"
+                            ],
+                            "query": [
+                                {
+                                    "key": "key",
+                                    "value": "[API_KEY]"
+                                }
+                            ]
+                        },
+                        "description": "Signs in an existing user with email and password."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Firestore - Spaces",
+            "item": [
+                {
+                    "name": "Get All Spaces",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer [ID_TOKEN]",
+                                "description": "Firebase ID Token returned from Auth"
+                            }
+                        ],
+                        "url": {
+                            "raw": "https://firestore.googleapis.com/v1/projects/[PROJECT_ID]/databases/(default)/documents/spaces",
+                            "protocol": "https",
+                            "host": [
+                                "firestore",
+                                "googleapis",
+                                "com"
+                            ],
+                            "path": [
+                                "v1",
+                                "projects",
+                                "[PROJECT_ID]",
+                                "databases",
+                                "(default)",
+                                "documents",
+                                "spaces"
+                            ]
+                        },
+                        "description": "Lists all documents in the 'spaces' collection."
+                    },
+                    "response": [
+                        {
+                            "name": "Successful Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "https://firestore.googleapis.com/v1/projects/spacesync/databases/(default)/documents/spaces"
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [],
+                            "cookie": [],
+                            "body": "{\n    \"documents\": [\n        {\n            \"name\": \"projects/spacesync/databases/(default)/documents/spaces/gym_001\",\n            \"fields\": {\n                \"name\": {\n                    \"stringValue\": \"Gym\"\n                },\n                \"maxCapacity\": {\n                    \"integerValue\": \"25\"\n                },\n                \"currentOccupancy\": {\n                    \"integerValue\": \"5\"\n                }\n            },\n            \"createTime\": \"2026-01-22T10:00:00.000Z\",\n            \"updateTime\": \"2026-01-22T10:00:00.000Z\"\n        }\n    ]\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Occupancy",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer [ID_TOKEN]"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"fields\": {\n    \"currentOccupancy\": {\n      \"integerValue\": \"6\"\n    }\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "https://firestore.googleapis.com/v1/projects/[PROJECT_ID]/databases/(default)/documents/spaces/[SPACE_ID]?updateMask.fieldPaths=currentOccupancy",
+                            "protocol": "https",
+                            "host": [
+                                "firestore",
+                                "googleapis",
+                                "com"
+                            ],
+                            "path": [
+                                "v1",
+                                "projects",
+                                "[PROJECT_ID]",
+                                "databases",
+                                "(default)",
+                                "documents",
+                                "spaces",
+                                "[SPACE_ID]"
+                            ],
+                            "query": [
+                                {
+                                    "key": "updateMask.fieldPaths",
+                                    "value": "currentOccupancy"
+                                }
+                            ]
+                        },
+                        "description": "Updates the 'currentOccupancy' field of a specific space document."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Add New Space",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer [ID_TOKEN]"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"fields\": {\n    \"name\": {\n      \"stringValue\": \"Swimming Pool\"\n    },\n    \"maxCapacity\": {\n      \"integerValue\": \"30\"\n    },\n    \"currentOccupancy\": {\n      \"integerValue\": \"0\"\n    }\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "https://firestore.googleapis.com/v1/projects/[PROJECT_ID]/databases/(default)/documents/spaces",
+                            "protocol": "https",
+                            "host": [
+                                "firestore",
+                                "googleapis",
+                                "com"
+                            ],
+                            "path": [
+                                "v1",
+                                "projects",
+                                "[PROJECT_ID]",
+                                "databases",
+                                "(default)",
+                                "documents",
+                                "spaces"
+                            ]
+                        },
+                        "description": "Creates a new document in the 'spaces' collection."
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ]
+}

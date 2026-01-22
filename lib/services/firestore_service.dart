@@ -1,14 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/space.dart';
 
 class FirestoreService {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  // Lazy access to instance
+  FirebaseFirestore get _db => FirebaseFirestore.instance;
 
   // Collection reference
   CollectionReference get _spacesCollection => _db.collection('spaces');
 
   // Stream of spaces
-  Stream<QuerySnapshot> getSpaces() {
-    return _spacesCollection.snapshots();
+  Stream<List<Space>> getSpaces() {
+    return _spacesCollection.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Space.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+      }).toList();
+    });
   }
 
   // Update occupancy
