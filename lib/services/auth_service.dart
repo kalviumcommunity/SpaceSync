@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -12,7 +13,7 @@ class AuthService {
     try {
       return await _auth.signInAnonymously();
     } catch (e) {
-      print("Error signing in anonymously: $e");
+      debugPrint("Error signing in anonymously: $e");
       return null;
     }
   }
@@ -25,7 +26,7 @@ class AuthService {
         password: password,
       );
     } catch (e) {
-      print("Error signing up: $e");
+      debugPrint("Error signing up: $e");
       rethrow;
     }
   }
@@ -38,7 +39,7 @@ class AuthService {
         password: password,
       );
     } catch (e) {
-      print("Error signing in: $e");
+      debugPrint("Error signing in: $e");
       rethrow;
     }
   }
