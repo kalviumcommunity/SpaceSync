@@ -6,15 +6,16 @@ import '../models/space.dart';
 // --- MOCK AUTH SERVICE ---
 
 class MockAuthService {
-  final StreamController<User?> _userController = StreamController<User?>();
+  static final StreamController<User?> _userController =
+      StreamController<User?>.broadcast();
   static User? _currentUser;
 
-  Stream<User?> get user => _userController.stream;
-
-  MockAuthService() {
-    // Start with no user or persisted user
-    _userController.add(_currentUser);
+  Stream<User?> get user async* {
+    yield _currentUser;
+    yield* _userController.stream;
   }
+
+  MockAuthService();
 
   Future<UserCredential?> signInAnonymously() async {
     _currentUser = MockUser(
@@ -53,10 +54,11 @@ class MockFirestoreService {
       StreamController<List<Space>>.broadcast();
   static final List<Space> _spacesData = [];
 
-  Stream<List<Space>> getSpaces() {
-    // Emit current data immediately
-    _emitSnapshot();
-    return _spacesController.stream;
+  Stream<List<Space>> getSpaces() async* {
+    // Emit current data immediately to the new listener
+    yield List.from(_spacesData);
+    // Then yield any future updates
+    yield* _spacesController.stream;
   }
 
   void _emitSnapshot() {
@@ -70,6 +72,7 @@ class MockFirestoreService {
       _spacesData[index] = Space(
         id: oldSpace.id,
         name: oldSpace.name,
+        iconName: oldSpace.iconName,
         maxCapacity: oldSpace.maxCapacity,
         currentOccupancy: newOccupancy,
       );
@@ -77,13 +80,14 @@ class MockFirestoreService {
     }
   }
 
-  Future<void> addSpace(
-      String name, int maxCapacity, int currentOccupancy) async {
+  Future<void> addSpace(String name, String iconName, int maxCapacity,
+      int currentOccupancy) async {
     final id =
         'space_${DateTime.now().millisecondsSinceEpoch}_${_spacesData.length}';
     _spacesData.add(Space(
       id: id,
       name: name,
+      iconName: iconName,
       maxCapacity: maxCapacity,
       currentOccupancy: currentOccupancy,
     ));
