@@ -25,10 +25,11 @@ class FirestoreService {
   }
 
   // Add a new space (for setup)
-  Future<void> addSpace(
-      String name, int maxCapacity, int currentOccupancy) async {
+  Future<void> addSpace(String name, String iconName, int maxCapacity,
+      int currentOccupancy) async {
     await _spacesCollection.add({
       'name': name,
+      'iconName': iconName,
       'maxCapacity': maxCapacity,
       'currentOccupancy': currentOccupancy,
     });

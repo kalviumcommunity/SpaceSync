@@ -70,6 +70,7 @@ class MockFirestoreService {
       _spacesData[index] = Space(
         id: oldSpace.id,
         name: oldSpace.name,
+        iconName: oldSpace.iconName,
         maxCapacity: oldSpace.maxCapacity,
         currentOccupancy: newOccupancy,
       );
@@ -77,13 +78,14 @@ class MockFirestoreService {
     }
   }
 
-  Future<void> addSpace(
-      String name, int maxCapacity, int currentOccupancy) async {
+  Future<void> addSpace(String name, String iconName, int maxCapacity,
+      int currentOccupancy) async {
     final id =
         'space_${DateTime.now().millisecondsSinceEpoch}_${_spacesData.length}';
     _spacesData.add(Space(
       id: id,
       name: name,
+      iconName: iconName,
       maxCapacity: maxCapacity,
       currentOccupancy: currentOccupancy,
     ));
