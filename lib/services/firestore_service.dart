@@ -34,4 +34,22 @@ class FirestoreService {
       'currentOccupancy': currentOccupancy,
     });
   }
+
+  // Collection reference for users
+  CollectionReference get _usersCollection => _db.collection('users');
+
+  // Save user data
+  Future<void> saveUserData(String uid, String email, String? name) async {
+    await _usersCollection.doc(uid).set({
+      'uid': uid,
+      'email': email,
+      'name': name ?? 'User',
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  // Get user data stream
+  Stream<DocumentSnapshot> getUserStream(String uid) {
+    return _usersCollection.doc(uid).snapshots();
+  }
 }
