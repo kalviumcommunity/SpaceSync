@@ -7,13 +7,88 @@ import 'main.dart'; // To access useMockServices
 import 'screens/space_details_screen.dart';
 
 class SpaceAvailabilityDemo extends StatelessWidget {
-  const SpaceAvailabilityDemo({super.key});
+  final bool isEmbedded;
+
+  const SpaceAvailabilityDemo({super.key, this.isEmbedded = false});
 
   @override
   Widget build(BuildContext context) {
     // Dynamically choose service based on mode
     final dynamic firestoreService =
         useMockServices ? MockFirestoreService() : FirestoreService();
+
+    final bodyContent = StreamBuilder<List<Space>>(
+      stream: firestoreService.getSpaces(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final spaces = snapshot.data ?? [];
+
+        if (spaces.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("No spaces found. Start with demo data?"),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () async {
+                    // Seed data matching React App's mock data
+                    await firestoreService.addSpace(
+                        'Fitness Center', 'dumbbell', 25, 8);
+                    await firestoreService.addSpace(
+                        'Swimming Pool', 'waves', 30, 15);
+                    await firestoreService.addSpace(
+                        'Community Hall', 'users', 50, 45);
+                    await firestoreService.addSpace(
+                        'Parking Area A', 'car', 60, 60); // Full
+                    await firestoreService.addSpace(
+                        'Café Lounge', 'coffee', 20, 12);
+                    await firestoreService.addSpace(
+                        'Library', 'book-open', 25, 18);
+                  },
+                  child: const Text('Initialize Demo Data'),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return Column(
+          children: [
+            if (useMockServices)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(8),
+                color: Colors.orange[100],
+                child: const Text("DEMO MODE: Changes sync in-memory only",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.orange, fontWeight: FontWeight.bold)),
+              ),
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: spaces.length,
+                itemBuilder: (context, index) {
+                  final space = spaces[index];
+                  return SpaceListItem(space: space);
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (isEmbedded) {
+      return bodyContent;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -32,74 +107,7 @@ class SpaceAvailabilityDemo extends StatelessWidget {
           ),
         ],
       ),
-      body: StreamBuilder<List<Space>>(
-        stream: firestoreService.getSpaces(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final spaces = snapshot.data ?? [];
-
-          if (spaces.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("No spaces found. Start with demo data?"),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () async {
-                      // Seed data matching React App's mock data
-                      await firestoreService.addSpace(
-                          'Fitness Center', 'dumbbell', 25, 8);
-                      await firestoreService.addSpace(
-                          'Swimming Pool', 'waves', 30, 15);
-                      await firestoreService.addSpace(
-                          'Community Hall', 'users', 50, 45);
-                      await firestoreService.addSpace(
-                          'Parking Area A', 'car', 60, 60); // Full
-                      await firestoreService.addSpace(
-                          'Café Lounge', 'coffee', 20, 12);
-                      await firestoreService.addSpace(
-                          'Library', 'book-open', 25, 18);
-                    },
-                    child: const Text('Initialize Demo Data'),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          return Column(
-            children: [
-              if (useMockServices)
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(8),
-                  color: Colors.orange[100],
-                  child: const Text("DEMO MODE: Changes sync in-memory only",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.orange, fontWeight: FontWeight.bold)),
-                ),
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: spaces.length,
-                  itemBuilder: (context, index) {
-                    final space = spaces[index];
-                    return SpaceListItem(space: space);
-                  },
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+      body: bodyContent,
     );
   }
 }

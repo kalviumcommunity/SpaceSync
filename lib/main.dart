@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'services/auth_service.dart';
 import 'services/mock_services.dart';
-import 'space_availability_widget.dart';
 
 // Check if we are running in Mock Mode
 bool useMockServices = false;
@@ -56,7 +56,7 @@ class AuthWrapper extends StatelessWidget {
           );
         }
         if (snapshot.hasData) {
-          return const SpaceAvailabilityDemo();
+          return const HomeScreen();
         }
         return const LoginScreen();
       },
